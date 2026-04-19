@@ -1,19 +1,17 @@
 from pathlib import Path
+import os
+import cloudinary
 
+# 🔐 BASE
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 🔐 SECURITY
-SECRET_KEY = 'dev-key'
+SECRET_KEY = 'django-insecure-CHANGE-THIS'
 
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    'ingatlan-app.onrender.com'
-]
+ALLOWED_HOSTS = []
 
-# 📦 APPS
+# 🔹 APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,10 +20,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 👉 SAJÁT APPOD (ellenőrizd a nevet!)
     'listings',
+
+    # ☁️ CLOUDINARY
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
-# ⚙️ MIDDLEWARE
+# 🔹 MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -36,16 +39,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# 🔹 URLS (JAVÍTVA!)
 ROOT_URLCONF = 'ingatlan_site.urls'
 
-# 🎨 TEMPLATES
+# 🔹 TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # ha nincs, nem gond
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -54,7 +59,10 @@ TEMPLATES = [
     },
 ]
 
-# 🧠 DATABASE
+# 🔹 WSGI (JAVÍTVA!)
+WSGI_APPLICATION = 'ingatlan_site.wsgi.application'
+
+# 🔹 DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -62,39 +70,36 @@ DATABASES = {
     }
 }
 
-# 🔑 AUTH
+# 🔹 PASSWORD
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# 🌍 LANGUAGE
-LANGUAGE_CODE = 'hu'
-
-TIME_ZONE = 'Europe/Budapest'
-
+# 🔹 LANGUAGE
+LANGUAGE_CODE = 'hu-hu'
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# 📁 STATIC
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# 🔹 STATIC
+STATIC_URL = 'static/'
 
-# 📸 MEDIA
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# ☁️ CLOUDINARY CONFIG (IDE ÍRD A SAJÁTOD!)
+cloudinary.config(
+    cloud_name="drvdyql4b",
+    api_key="652588949169875",
+    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"
+)
 
-# 🔐 LOGIN / LOGOUT
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = '/accounts/login/'
+# 🔥 EZ A KULCS
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# 🔚 DEFAULT
+# ❗ FONTOS: NE HASZNÁLD EZEKET
+# MEDIA_ROOT = ...
+# MEDIA_URL = ...
+
+# 🔹 DEFAULT
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
