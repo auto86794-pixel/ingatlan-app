@@ -1,31 +1,36 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from .models import Listing
 import cloudinary.uploader
 
 
-# 🔹 HOME
+# 🟢 IDEIGLENES USER LÉTREHOZÁS (FREE RENDER FIX)
+def create_test_user(request):
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser(
+            username='admin',
+            password='12345678Aa'
+        )
+        return HttpResponse("User létrehozva")
+    return HttpResponse("Már létezik")
+
+
+# 🏠 LISTA
 def home(request):
-    return render(request, 'home.html')
+    listings = Listing.objects.all()
+    return render(request, 'home.html', {'listings': listings})
 
 
-# 🔹 REGISTER
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserCreationForm()
-
-    return render(request, 'registration/register.html', {'form': form})
+# 🔍 RÉSZLETEK
+def listing_detail(request, id):
+    listing = get_object_or_404(Listing, id=id)
+    return render(request, 'detail.html', {'listing': listing})
 
 
-# 🔥 CREATE LISTING + CLOUDINARY
-@login_required
+# ➕ CREATE
+@login_required(login_url='/accounts/login/')
 def create_listing(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -33,29 +38,48 @@ def create_listing(request):
         price = request.POST.get('price')
         image = request.FILES.get('image')
 
+        image_url = None
+
         if image:
             result = cloudinary.uploader.upload(image)
             image_url = result.get('secure_url')
-            print("CLOUDINARY URL:", image_url)
 
-        # később itt mentjük adatbázisba
-        return redirect('home')
+        Listing.objects.create(
+            title=title,
+            description=description,
+            price=price,
+            image=image_url,
+            user=request.user
+        )
+
+        return redirect('/')
 
     return render(request, 'create_listing.html')
 
 
-# 🔹 LISTING DETAIL
-def listing_detail(request, id):
-    return render(request, 'listing_detail.html')
-
-
-# 🔹 EDIT LISTING
-@login_required
+# ✏️ EDIT
+@login_required(login_url='/accounts/login/')
 def edit_listing(request, id):
-    return render(request, 'edit_listing.html')
+    listing = get_object_or_404(Listing, id=id)
+
+    if request.method == 'POST':
+        listing.title = request.POST.get('title')
+        listing.description = request.POST.get('description')
+        listing.price = request.POST.get('price')
+
+        if request.FILES.get('image'):
+            result = cloudinary.uploader.upload(request.FILES.get('image'))
+            listing.image = result.get('secure_url')
+
+        listing.save()
+        return redirect('/')
+
+    return render(request, 'edit_listing.html', {'listing': listing})
 
 
-# 🔹 DELETE LISTING
-@login_required
+# ❌ DELETE
+@login_required(login_url='/accounts/login/')
 def delete_listing(request, id):
-    return redirect('home')
+    listing = get_object_or_404(Listing, id=id)
+    listing.delete()
+    return redirect('/')
