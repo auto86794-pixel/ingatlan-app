@@ -9,7 +9,9 @@ SECRET_KEY = 'django-insecure-CHANGE-THIS'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ✅ RENDER FIX
+ALLOWED_HOSTS = ['ingatlan-app.onrender.com', 'localhost', '127.0.0.1']
+
 
 # 🔹 APPS
 INSTALLED_APPS = [
@@ -20,13 +22,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 👉 SAJÁT APPOD (ellenőrizd a nevet!)
+    # 👉 SAJÁT APP
     'listings',
 
     # ☁️ CLOUDINARY
     'cloudinary',
     'cloudinary_storage',
 ]
+
 
 # 🔹 MIDDLEWARE
 MIDDLEWARE = [
@@ -39,14 +42,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# 🔹 URLS (JAVÍTVA!)
+
+# 🔹 URLS
 ROOT_URLCONF = 'ingatlan_site.urls'
+
 
 # 🔹 TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # ha nincs, nem gond
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,8 +64,10 @@ TEMPLATES = [
     },
 ]
 
-# 🔹 WSGI (JAVÍTVA!)
+
+# 🔹 WSGI
 WSGI_APPLICATION = 'ingatlan_site.wsgi.application'
+
 
 # 🔹 DATABASE
 DATABASES = {
@@ -70,6 +77,7 @@ DATABASES = {
     }
 }
 
+
 # 🔹 PASSWORD
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -78,28 +86,34 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+
 # 🔹 LANGUAGE
 LANGUAGE_CODE = 'hu-hu'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+
 # 🔹 STATIC
 STATIC_URL = 'static/'
 
+
 # ☁️ CLOUDINARY CONFIG (IDE ÍRD A SAJÁTOD!)
 cloudinary.config(
-    cloud_name="drvdyql4b",
-    api_key="652588949169875",
-    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"
+    cloud_name="A_TE_CLOUD_NAME",
+    api_key="A_TE_API_KEY",
+    api_secret="A_TE_API_SECRET"
 )
 
-# 🔥 EZ A KULCS
+
+# 🔥 KÉPEK CLOUDINARY-BE MENNEK
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# ❗ FONTOS: NE HASZNÁLD EZEKET
+
+# ❗ NE HASZNÁLD EZEKET
 # MEDIA_ROOT = ...
 # MEDIA_URL = ...
+
 
 # 🔹 DEFAULT
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
