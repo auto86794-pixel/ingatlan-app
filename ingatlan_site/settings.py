@@ -1,17 +1,22 @@
+import os
 from pathlib import Path
 import cloudinary
 
+# BASE
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 🔐 SECURITY
-SECRET_KEY = 'django-insecure-CHANGE-ME'
+# SECURITY
+SECRET_KEY = 'django-insecure-CHANGE_THIS'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['ingatlan-app.onrender.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'ingatlan-app.onrender.com',
+]
 
-
-# 🔌 APPS
+# INSTALLED APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,13 +26,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'listings',
-
-    'cloudinary',
-    'cloudinary_storage',
 ]
 
-
-# ⚙️ MIDDLEWARE
+# MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -38,16 +39,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-# 🌐 URLS
+# URL
 ROOT_URLCONF = 'ingatlan_site.urls'
 
-
-# 🖼️ TEMPLATES
+# TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # fontos!
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -60,12 +59,10 @@ TEMPLATES = [
     },
 ]
 
-
-# 🚀 WSGI
+# WSGI
 WSGI_APPLICATION = 'ingatlan_site.wsgi.application'
 
-
-# 🗄️ DATABASE
+# DATABASE (SQLite egyszerűség kedvéért)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -73,12 +70,10 @@ DATABASES = {
     }
 }
 
-
-# 🔐 PASSWORD VALIDATION
+# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = []
 
-
-# 🌍 LANGUAGE
+# LANGUAGE
 LANGUAGE_CODE = 'hu'
 
 TIME_ZONE = 'UTC'
@@ -86,29 +81,23 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
-# 📦 STATIC
+# STATIC
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-
-# 📸 CLOUDINARY CONFIG
-cloudinary.config(
-    cloud_name="drdvqyl4b",
-    api_key="652588949169875",
-    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"
-)
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-
-# 🔐 LOGIN REDIRECT
+# LOGIN
 LOGIN_REDIRECT_URL = '/create/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
+# =========================
+# 🔥 CLOUDINARY FIX
+# =========================
 
-# 🛡️ CSRF + SESSION (Render miatt)
-CSRF_TRUSTED_ORIGINS = ['https://ingatlan-app.onrender.com']
+cloudinary.config(
+    cloud_name="drdvqyl4b",
+    api_key="652588949169875",
+    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"  # <-- IDE A TE SECRETED
+)
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# DEFAULT
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
