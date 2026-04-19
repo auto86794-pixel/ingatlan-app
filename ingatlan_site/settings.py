@@ -2,11 +2,10 @@ import os
 from pathlib import Path
 import cloudinary
 
-# BASE
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY
-SECRET_KEY = 'django-insecure-CHANGE_THIS'
+# 🔐 SECURITY
+SECRET_KEY = 'django-insecure-CHANGE_ME'
 
 DEBUG = True
 
@@ -16,7 +15,15 @@ ALLOWED_HOSTS = [
     'ingatlan-app.onrender.com',
 ]
 
-# INSTALLED APPS
+# 🔥 RENDER FIX (SESSION + CSRF)
+CSRF_TRUSTED_ORIGINS = [
+    'https://ingatlan-app.onrender.com',
+]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -33,7 +40,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -46,7 +55,7 @@ ROOT_URLCONF = 'ingatlan_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # fontos!
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -62,7 +71,7 @@ TEMPLATES = [
 # WSGI
 WSGI_APPLICATION = 'ingatlan_site.wsgi.application'
 
-# DATABASE (SQLite egyszerűség kedvéért)
+# DB
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -70,14 +79,12 @@ DATABASES = {
     }
 }
 
-# PASSWORD VALIDATION
+# PASSWORD
 AUTH_PASSWORD_VALIDATORS = []
 
-# LANGUAGE
+# LANG
 LANGUAGE_CODE = 'hu'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
 USE_TZ = True
 
@@ -90,13 +97,13 @@ LOGIN_REDIRECT_URL = '/create/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # =========================
-# 🔥 CLOUDINARY FIX
+# 🔥 CLOUDINARY (FIX)
 # =========================
 
 cloudinary.config(
     cloud_name="drdvqyl4b",
     api_key="652588949169875",
-    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"  # <-- IDE A TE SECRETED
+    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"
 )
 
 # DEFAULT
