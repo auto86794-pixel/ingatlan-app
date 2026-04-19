@@ -1,13 +1,22 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    # 🛠 ADMIN
-    path('admin/', admin.site.urls),
+    # 🟢 TEMP USER (FREE RENDER FIX)
+    path('create-user/', views.create_test_user),
 
-    # 🔐 LOGIN / LOGOUT (Django beépített)
-    path('accounts/', include('django.contrib.auth.urls')),
+    # 🏠 FŐOLDAL
+    path('', views.home, name='home'),
 
-    # 🏠 SAJÁT APP (EZ A KULCS!)
-    path('', include('listings.urls')),
+    # 🔍 DETAIL
+    path('listing/<int:id>/', views.listing_detail, name='listing_detail'),
+
+    # ➕ CREATE
+    path('create/', views.create_listing, name='create'),
+
+    # ✏️ EDIT
+    path('edit/<int:id>/', views.edit_listing, name='edit_listing'),
+
+    # ❌ DELETE
+    path('delete/<int:id>/', views.delete_listing, name='delete_listing'),
 ]
