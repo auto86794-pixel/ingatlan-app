@@ -7,7 +7,11 @@ SECRET_KEY = 'dev-key'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'ingatlan-app.onrender.com'
+]
 
 # 📦 APPS
 INSTALLED_APPS = [
@@ -38,7 +42,7 @@ ROOT_URLCONF = 'ingatlan_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # 👈 fontos
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -58,7 +62,7 @@ DATABASES = {
     }
 }
 
-# 🔑 AUTH VALIDATION
+# 🔑 AUTH
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -76,13 +80,14 @@ TIME_ZONE = 'Europe/Budapest'
 USE_I18N = True
 USE_TZ = True
 
-# 📁 STATIC FILES
+# 📁 STATIC
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # ⚠️ hozd létre ezt a mappát!
+    BASE_DIR / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# 📸 MEDIA (képfeltöltés)
+# 📸 MEDIA
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
