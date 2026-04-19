@@ -27,24 +27,24 @@ def register(request):
 @login_required
 def create_listing(request):
     if request.method == 'POST':
-        # itt majd később mentünk adatot
+        # később itt mentjük az adatokat
         return redirect('home')
 
     return render(request, 'create.html')
 
 
-# 🔹 LISTING DETAIL (🔥 EZ HIÁNYZOTT!)
+# 🔥 LISTING DETAIL (EZ VOLT A HIBA!)
 def listing_detail(request, id):
     return render(request, 'listing_detail.html')
 
 
-# 🔹 EDIT
+# 🔹 EDIT LISTING
 @login_required
 def edit_listing(request, id):
     return render(request, 'edit_listing.html')
 
 
-# 🔹 DELETE
+# 🔹 DELETE LISTING
 @login_required
 def delete_listing(request, id):
     return redirect('home')
