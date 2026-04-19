@@ -27,13 +27,13 @@ def register(request):
 @login_required
 def create_listing(request):
     if request.method == 'POST':
-        # később itt mentjük az adatokat
+        # később ide jön a mentés + Cloudinary
         return redirect('home')
 
-    return render(request, 'create.html')
+    return render(request, 'create_listing.html')  # ✅ JAVÍTVA
 
 
-# 🔥 LISTING DETAIL (EZ VOLT A HIBA!)
+# 🔹 LISTING DETAIL
 def listing_detail(request, id):
     return render(request, 'listing_detail.html')
 
@@ -41,7 +41,7 @@ def listing_detail(request, id):
 # 🔹 EDIT LISTING
 @login_required
 def edit_listing(request, id):
-    return render(request, 'edit_listing.html')
+    return render(request, 'edit_listing.html')  # ✅ JAVÍTVA
 
 
 # 🔹 DELETE LISTING
