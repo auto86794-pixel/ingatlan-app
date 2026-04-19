@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ingatlan App</title>
+
+    <!-- 📱 Mobil -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 📲 PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0d6efd">
+
+    <!-- 🎨 Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- ❤️ ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #dfe9f3, #ffffff);
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 12px;
+            z-index: 1000;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            border-radius: 20px;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .price-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 🔝 HEADER -->
+<div class="header">
+
+    <h4 class="text-center">🏠 Ingatlanok</h4>
+
+    <!-- 🔐 LOGIN -->
+    <div class="text-center mb-2">
+        {% if user.is_authenticated %}
+            <span>{{ user.username }}</span>
+
+            <form method="post" action="/accounts/logout/" style="display:inline;">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-danger">Kilép</button>
+            </form>
+        {% else %}
+            <a href="/accounts/login/" class="btn btn-sm btn-success">Login</a>
+            <a href="/register/" class="btn btn-sm btn-warning">Register</a>
+        {% endif %}
+    </div>
+
+    <!-- 🔍 SEARCH -->
+    <form method="get" class="row g-1">
+        <div class="col-6">
+            <input class="form-control" name="city" placeholder="Város">
+        </div>
+        <div class="col-3">
+            <input class="form-control" name="min_price" placeholder="Min ár">
+        </div>
+        <div class="col-3">
+            <button class="btn btn-primary w-100">OK</button>
+        </div>
+    </form>
+
+</div>
+
+<!-- 📦 LISTA -->
+<div class="container mt-3">
+
+    <div class="row">
+
+        {% for listing in listings %}
+        <div class="col-12 mb-3">
+
+            <div class="card position-relative shadow">
+
+                {% if listing.image %}
+                <img src="{{ listing.image }}" style="height:200px; object-fit:cover;">
+                {% endif %}
+
+                <!-- 💰 Ár overlay -->
+                <div class="price-overlay">
+                    {{ listing.price }} Ft
+                </div>
+
+                <!-- ❤️ Kedvenc -->
+                <a href="/favorite/{{ listing.id }}/"
+                   class="btn btn-sm favorite-btn
+                   {% if listing.id in favorites %}
+                       btn-danger
+                   {% else %}
+                       btn-light
+                   {% endif %}">
+                    <i class="bi bi-heart-fill"></i>
+                </a>
+
+                <div class="p-3">
+                    <h5>
+                        <a href="/listing/{{ listing.id }}/" class="text-decoration-none">
+                            {{ listing.title }}
+                        </a>
+                    </h5>
+
+                    <p>📍 {{ listing.city }}</p>
+                </div>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    {% if not listings %}
+        <p class="text-center">Nincs találat 😢</p>
+    {% endif %}
+
+</div>
+
+<!-- ⚙️ SERVICE WORKER -->
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/sw.js');
+}
+</script>
+
+</body>
+</html>

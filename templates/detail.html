@@ -1,0 +1,23 @@
+<h1>{{ listing.title }}</h1>
+
+<p><strong>Város:</strong> {{ listing.city }}</p>
+<p><strong>Ár:</strong> {{ listing.price }} Ft</p>
+
+{% if listing.size %}
+<p><strong>Méret:</strong> {{ listing.size }} m2</p>
+{% endif %}
+
+{% if listing.rooms %}
+<p><strong>Szobák:</strong> {{ listing.rooms }}</p>
+{% endif %}
+
+{% if listing.description %}
+<p>{{ listing.description }}</p>
+{% endif %}
+
+{% if listing.image %}
+<img src="{{ listing.image }}" width="400">
+{% endif %}
+
+<br><br>
+<a href="/">← Vissza</a>
