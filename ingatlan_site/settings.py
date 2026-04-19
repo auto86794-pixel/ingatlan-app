@@ -100,9 +100,9 @@ STATIC_URL = 'static/'
 
 # ☁️ CLOUDINARY CONFIG (IDE ÍRD A SAJÁTOD!)
 cloudinary.config(
-    cloud_name="A_TE_CLOUD_NAME",
-    api_key="A_TE_API_KEY",
-    api_secret="A_TE_API_SECRET"
+    cloud_name="drvdyql4b",
+    api_key="652588949169875",
+    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"
 )
 
 

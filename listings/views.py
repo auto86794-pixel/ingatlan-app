@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+import cloudinary.uploader
 
 
 # 🔹 HOME
@@ -23,14 +24,24 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
-# 🔹 CREATE LISTING
+# 🔥 CREATE LISTING + CLOUDINARY
 @login_required
 def create_listing(request):
     if request.method == 'POST':
-        # később ide jön a mentés + Cloudinary
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        image = request.FILES.get('image')
+
+        if image:
+            result = cloudinary.uploader.upload(image)
+            image_url = result.get('secure_url')
+            print("CLOUDINARY URL:", image_url)
+
+        # később itt mentjük adatbázisba
         return redirect('home')
 
-    return render(request, 'create_listing.html')  # ✅ JAVÍTVA
+    return render(request, 'create_listing.html')
 
 
 # 🔹 LISTING DETAIL
@@ -41,7 +52,7 @@ def listing_detail(request, id):
 # 🔹 EDIT LISTING
 @login_required
 def edit_listing(request, id):
-    return render(request, 'edit_listing.html')  # ✅ JAVÍTVA
+    return render(request, 'edit_listing.html')
 
 
 # 🔹 DELETE LISTING
