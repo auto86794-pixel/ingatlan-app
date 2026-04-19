@@ -6,7 +6,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 🔐 SECURITY
 SECRET_KEY = 'django-insecure-CHANGE_ME'
-
 DEBUG = True
 
 ALLOWED_HOSTS = [
@@ -15,14 +14,22 @@ ALLOWED_HOSTS = [
     'ingatlan-app.onrender.com',
 ]
 
-# 🔥 RENDER FIX (SESSION + CSRF)
+# 🔥 RENDER / HTTPS / SESSION FIX
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 CSRF_TRUSTED_ORIGINS = [
     'https://ingatlan-app.onrender.com',
 ]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# fontos néha Renderen
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
+
+# session biztosan DB-ben
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # APPS
 INSTALLED_APPS = [
@@ -72,7 +79,7 @@ TEMPLATES = [
 # WSGI
 WSGI_APPLICATION = 'ingatlan_site.wsgi.application'
 
-# DB
+# DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -98,25 +105,13 @@ LOGIN_REDIRECT_URL = '/create/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # =========================
-# 🔥 CLOUDINARY (FIX)
+# 🔥 CLOUDINARY
 # =========================
-
 cloudinary.config(
     cloud_name="drdvqyl4b",
     api_key="652588949169875",
-    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"
+    api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"  # ← cseréld a sajátodra!
 )
 
 # DEFAULT
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-SESSION_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SAMESITE = 'None'
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://ingatlan-app.onrender.com'
-]
