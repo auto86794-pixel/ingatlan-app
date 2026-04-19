@@ -1,19 +1,17 @@
 from pathlib import Path
-import os
 import cloudinary
 
-# 🔐 BASE
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-CHANGE-THIS'
+# 🔐 SECURITY
+SECRET_KEY = 'django-insecure-CHANGE-ME'
 
 DEBUG = True
 
-# ✅ RENDER FIX
-ALLOWED_HOSTS = ['ingatlan-app.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['ingatlan-app.onrender.com']
 
 
-# 🔹 APPS
+# 🔌 APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,16 +20,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 👉 SAJÁT APP
     'listings',
 
-    # ☁️ CLOUDINARY
     'cloudinary',
     'cloudinary_storage',
 ]
 
 
-# 🔹 MIDDLEWARE
+# ⚙️ MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -43,11 +39,11 @@ MIDDLEWARE = [
 ]
 
 
-# 🔹 URLS
+# 🌐 URLS
 ROOT_URLCONF = 'ingatlan_site.urls'
 
 
-# 🔹 TEMPLATES
+# 🖼️ TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -65,11 +61,11 @@ TEMPLATES = [
 ]
 
 
-# 🔹 WSGI
+# 🚀 WSGI
 WSGI_APPLICATION = 'ingatlan_site.wsgi.application'
 
 
-# 🔹 DATABASE
+# 🗄️ DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -78,42 +74,41 @@ DATABASES = {
 }
 
 
-# 🔹 PASSWORD
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
+# 🔐 PASSWORD VALIDATION
+AUTH_PASSWORD_VALIDATORS = []
 
 
-# 🔹 LANGUAGE
-LANGUAGE_CODE = 'hu-hu'
+# 🌍 LANGUAGE
+LANGUAGE_CODE = 'hu'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
 USE_TZ = True
 
 
-# 🔹 STATIC
-STATIC_URL = 'static/'
+# 📦 STATIC
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
-# ☁️ CLOUDINARY CONFIG (IDE ÍRD A SAJÁTOD!)
+# 📸 CLOUDINARY CONFIG
 cloudinary.config(
-    cloud_name="drvdyql4b",
+    cloud_name="drdvqyl4b",
     api_key="652588949169875",
     api_secret="UXWfHKmSH26UKtkzhBLL_ikzWlM"
 )
 
-
-# 🔥 KÉPEK CLOUDINARY-BE MENNEK
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
-# ❗ NE HASZNÁLD EZEKET
-# MEDIA_ROOT = ...
-# MEDIA_URL = ...
+# 🔐 LOGIN REDIRECT
+LOGIN_REDIRECT_URL = '/create/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
-# 🔹 DEFAULT
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# 🛡️ CSRF + SESSION (Render miatt)
+CSRF_TRUSTED_ORIGINS = ['https://ingatlan-app.onrender.com']
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
